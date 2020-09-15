@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class OceanAnimator : MonoBehaviour
+public class Waterline : MonoBehaviour
 {
     public Color waterColor = Color.blue;
     public Color foamColor = Color.white;
@@ -56,9 +56,28 @@ public class OceanAnimator : MonoBehaviour
     {
         while (true)
         {
-            RenderTexture();
+            if (IsOnscreen())
+            {
+                RenderTexture();
+            }
+
             yield return new WaitForSeconds(1f / fps);
         }
+    }
+
+    bool IsOnscreen()
+    {
+        var rect = new Rect(transform.position.x, transform.position.y, width, height);
+
+        var cameraSize = new Vector2(
+            Camera.main.orthographicSize * Screen.width / Screen.height * 2f,
+            Camera.main.orthographicSize * 2f);
+
+        var cameraRect = new Rect(
+            (Vector2)Camera.main.transform.position - cameraSize / 2f,
+            cameraSize);
+
+        return cameraRect.Overlaps(rect);
     }
 
     void RenderTexture()
