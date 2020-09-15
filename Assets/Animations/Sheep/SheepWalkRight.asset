@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bab6d38b38b846518d62ab7018d7b7f, type: 3}
+  m_Name: SheepWalkRight
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: -94349284460663922, guid: b27d4ba9fe2874cdfa3375897e4c1852, type: 3}
+  - {fileID: -153997217174440492, guid: b27d4ba9fe2874cdfa3375897e4c1852, type: 3}
+  fps: 12
