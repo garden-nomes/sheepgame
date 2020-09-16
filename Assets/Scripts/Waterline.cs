@@ -105,8 +105,7 @@ public class Waterline : MonoBehaviour
                     ? (y > oceanY - (foamNoiseHeight * pixelsPerUnit)
                         ? foamColor
                         : waterColor)
-                    : ((y < oceanY + 1 && x % 4 != 0) ||
-                       (y < oceanY + 2 && y > oceanY + 1 && x % 2 == 0))
+                    : y < oceanY + 1
                         ? shadowColor
                         : Color.clear;
 

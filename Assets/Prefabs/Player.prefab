@@ -205,6 +205,10 @@ MonoBehaviour:
       duration: 3
     - text: what a nice day
       duration: 2
+    - text: 
+      duration: 1
+    - text: should probably check on the flock
+      duration: 2
   - event_: 1
     interrupt: 1
     lines:
@@ -629,6 +633,42 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8252679853051426002}
     m_Modifications:
+    - target: {fileID: 881881527, guid: 9207aaa8cccaa44bda80c8e5c99dd16c, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 881881528, guid: 9207aaa8cccaa44bda80c8e5c99dd16c, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: f9c93f4aa387a4f209fef2aebaeae3db, type: 3}
+    - target: {fileID: 881881528, guid: 9207aaa8cccaa44bda80c8e5c99dd16c, type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 881881528, guid: 9207aaa8cccaa44bda80c8e5c99dd16c, type: 3}
+      propertyPath: m_FontData.m_LineSpacing
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 881881530, guid: 9207aaa8cccaa44bda80c8e5c99dd16c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 903119549, guid: 9207aaa8cccaa44bda80c8e5c99dd16c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 903119549, guid: 9207aaa8cccaa44bda80c8e5c99dd16c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 903119550, guid: 9207aaa8cccaa44bda80c8e5c99dd16c, type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 903119551, guid: 9207aaa8cccaa44bda80c8e5c99dd16c, type: 3}
+      propertyPath: m_DynamicPixelsPerUnit
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 903119552, guid: 9207aaa8cccaa44bda80c8e5c99dd16c, type: 3}
       propertyPath: m_Camera
       value: 
