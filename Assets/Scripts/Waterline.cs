@@ -7,6 +7,7 @@ public class Waterline : MonoBehaviour
 {
     public Color waterColor = Color.blue;
     public Color foamColor = Color.white;
+    public Color shadowColor = Color.grey;
     public float foamHeight = 1f;
     public int width = 10;
     public int height = 30;
@@ -93,7 +94,8 @@ public class Waterline : MonoBehaviour
                 Mathf.PerlinNoise(noiseX * xFrequency, Time.time * 0.1f * timeFrequency) * height;
 
             var foamNoiseHeight =
-                Mathf.PerlinNoise(foamNoiseX * xFrequency, Time.time * 0.1f * timeFrequency) * foamHeight;
+                Mathf.PerlinNoise(foamNoiseX * xFrequency, Time.time * 0.1f * timeFrequency) *
+                foamHeight;
 
             var oceanY = oceanHeight * pixelsPerUnit;
 
@@ -103,7 +105,10 @@ public class Waterline : MonoBehaviour
                     ? (y > oceanY - (foamNoiseHeight * pixelsPerUnit)
                         ? foamColor
                         : waterColor)
-                    : Color.clear;
+                    : ((y < oceanY + 1 && x % 4 != 0) ||
+                       (y < oceanY + 2 && y > oceanY + 1 && x % 2 == 0))
+                        ? shadowColor
+                        : Color.clear;
 
                 pixels[y * texture.width + x] = color;
             }
