@@ -65,6 +65,7 @@ GameObject:
   - component: {fileID: 2128097799}
   - component: {fileID: 610798309073864206}
   - component: {fileID: -1526774895774135194}
+  - component: {fileID: 3527832227068324991}
   m_Layer: 9
   m_Name: Sheep
   m_TagString: sheep
@@ -440,3 +441,17 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 636a4bbfe274944518c762b8e3cee339, type: 3}
   minWait: 1
   maxWait: 5
+--- !u!114 &3527832227068324991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2846293891625078570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72aa679f6ead3422bb9dfb853700850a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Action: 
+  highlightMaterial: {fileID: 2100000, guid: a7d2df22612884469b8a13db6242e26f, type: 2}

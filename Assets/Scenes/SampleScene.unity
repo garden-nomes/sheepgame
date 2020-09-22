@@ -843,7 +843,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 18.001684, y: -227, z: -10}
+  m_LocalPosition: {x: 18.015163, y: -227, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 315958217}
@@ -1963,6 +1963,51 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e7af4140b73844d38dfbf4d0953243b, type: 3}
+--- !u!1 &938779481
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 938779483}
+  - component: {fileID: 938779482}
+  m_Layer: 0
+  m_Name: InteractionController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &938779482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938779481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae77655f5ac644a0283e3d2a5000a312, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1332890749}
+  interactionRadius: 3
+--- !u!4 &938779483
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938779481}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 27.15607, y: -179.34984, z: -361.10855}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 21
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &940302578
 GameObject:
   m_ObjectHideFlags: 0
@@ -2304,7 +2349,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3571950899547568635, guid: 6822ac76e25ca4d4d837811f7f7e1082, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 35
+      value: 36
       objectReference: {fileID: 0}
     - target: {fileID: 3571950899547568635, guid: 6822ac76e25ca4d4d837811f7f7e1082, type: 3}
       propertyPath: m_LocalPosition.y
@@ -20947,86 +20992,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2800356075396978006, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2800356075396978007, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 64
-      objectReference: {fileID: 0}
-    - target: {fileID: 2800356075396978008, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
-      propertyPath: m_FontData.m_Font
-      value: 
-      objectReference: {fileID: 12800000, guid: f9c93f4aa387a4f209fef2aebaeae3db, type: 3}
-    - target: {fileID: 2800356075396978008, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
-      propertyPath: m_FontData.m_FontSize
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2800356075396978008, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
-      propertyPath: m_FontData.m_RichText
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2800356075396978008, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
-      propertyPath: m_FontData.m_LineSpacing
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2800356075396978010, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2800356075417642528, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 519420031}
-    - target: {fileID: 2800356075417642589, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.125
-      objectReference: {fileID: 0}
-    - target: {fileID: 2800356075417642589, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.125
-      objectReference: {fileID: 0}
-    - target: {fileID: 2800356075417642590, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
-      propertyPath: m_BlockingMask.m_Bits
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2800356075417642590, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
-      propertyPath: m_IgnoreReversedGraphics
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2800356075417642591, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
-      propertyPath: m_DynamicPixelsPerUnit
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2800356075417642591, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
-      propertyPath: m_ReferencePixelsPerUnit
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8252679853051425834, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
-      propertyPath: interactions.Array.data[0].lines.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8252679853051425834, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8252679853051425834, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
-      propertyPath: interactions.Array.data[0].lines.Array.data[2].text
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8252679853051425834, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
-      propertyPath: interactions.Array.data[0].lines.Array.data[2].duration
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8252679853051425834, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
-      propertyPath: interactions.Array.data[0].lines.Array.data[3].text
-      value: should probably check on the flock
-      objectReference: {fileID: 0}
-    - target: {fileID: 8252679853051425834, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
-      propertyPath: interactions.Array.data[0].lines.Array.data[3].duration
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 8252679853051426002, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8
