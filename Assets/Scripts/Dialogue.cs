@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class Interaction
+public class Dialogue
 {
     public Event event_;
     public bool interrupt = true;

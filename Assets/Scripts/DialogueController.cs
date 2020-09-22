@@ -2,9 +2,9 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class InteractionController : MonoBehaviour
+public class DialogueController : MonoBehaviour
 {
-    public Interaction[] interactions;
+    public Dialogue[] dialogues;
     public Talkbox talkbox;
 
     void Awake()
@@ -19,14 +19,14 @@ public class InteractionController : MonoBehaviour
 
     void OnEvent(Event event_, GameObject target)
     {
-        var matches = interactions.Where(i => i.event_ == event_).ToList();
+        var matches = dialogues.Where(i => i.event_ == event_).ToList();
 
         if (!matches.Any())
         {
             return;
         }
 
-        var interaction = matches[Mathf.FloorToInt(Random.value * matches.Count)];
-        talkbox.Say(interaction, target);
+        var dialogue = matches[Mathf.FloorToInt(Random.value * matches.Count)];
+        talkbox.Say(dialogue, target);
     }
 }

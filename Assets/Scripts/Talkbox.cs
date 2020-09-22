@@ -9,11 +9,11 @@ public class Talkbox : MonoBehaviour
 
     Coroutine coroutine;
 
-    public void Say(Interaction interaction, GameObject target)
+    public void Say(Dialogue dialogue, GameObject target)
     {
         if (coroutine != null)
         {
-            if (interaction.interrupt)
+            if (dialogue.interrupt)
             {
                 StopCoroutine(coroutine);
             }
@@ -23,7 +23,7 @@ public class Talkbox : MonoBehaviour
             }
         }
 
-        coroutine = StartCoroutine(SayCoroutine(interaction, target));
+        coroutine = StartCoroutine(SayCoroutine(dialogue, target));
     }
 
     private IEnumerator SayCoroutine(string message, float time)
@@ -34,9 +34,9 @@ public class Talkbox : MonoBehaviour
         text.gameObject.SetActive(false);
     }
 
-    private IEnumerator SayCoroutine(Interaction interaction, GameObject target)
+    private IEnumerator SayCoroutine(Dialogue dialogue, GameObject target)
     {
-        foreach (var line in interaction.lines)
+        foreach (var line in dialogue.lines)
         {
             yield return SayCoroutine(line.Render(target), line.duration);
             yield return new WaitForSeconds(timeBetweenLines);
