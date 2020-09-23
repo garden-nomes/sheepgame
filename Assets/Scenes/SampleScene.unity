@@ -542,6 +542,23 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &322401350 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3571950899547568633, guid: 6822ac76e25ca4d4d837811f7f7e1082, type: 3}
+  m_PrefabInstance: {fileID: 1100127192}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &322401354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 322401350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61acccbd96f41409bbedd346d5488ef4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &362478474
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -843,7 +860,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 18.015163, y: -227, z: -10}
+  m_LocalPosition: {x: 18.020203, y: -227, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 315958217}
@@ -2731,9 +2748,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Baba
       objectReference: {fileID: 0}
+    - target: {fileID: 7103200662908662841, guid: 7e155301c8fa442269ebf7febad41bba, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 8869773311886558062, guid: 7e155301c8fa442269ebf7febad41bba, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8869773311886558062, guid: 7e155301c8fa442269ebf7febad41bba, type: 3}
       propertyPath: m_LocalPosition.y

@@ -85,7 +85,12 @@ Shader "Sprites/AddSmooth"
 				fixed pixelRight = tex2D(_MainTex, IN.texcoord + right).a;
 				fixed pixelUp = tex2D(_MainTex, IN.texcoord + up).a;
 				fixed pixelDown = tex2D(_MainTex, IN.texcoord - up).a;
-				fixed outline = max(max(pixelLeft, pixelRight), max(pixelUp, pixelDown)) - col.a;
+
+				// inner line
+				fixed outline = (1 - pixelLeft * pixelRight * pixelUp * pixelDown) * col.a;
+
+				// outline
+				// fixed outline = max(max(pixelLeft, pixelRight), max(pixelUp, pixelDown)) - col.a;
 
 				return lerp(col, _OutlineColor, outline * _OutlineToggle);
 			}
