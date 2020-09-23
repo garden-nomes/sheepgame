@@ -11,6 +11,8 @@ public enum SheepState
 }
 
 [RequireComponent(typeof(SteeredObject))]
+[RequireComponent(typeof(Bleater))]
+[RequireComponent(typeof(Interactible))]
 public class Sheep : MonoBehaviour
 {
     // individual traits
@@ -19,16 +21,16 @@ public class Sheep : MonoBehaviour
     // settings
     public float pickupRadius = 1f;
     public float neighborRadius = 6f;
-    public float wanderChangeTarget = 1f;       // wander
+    public float wanderChangeTarget = 1f; // wander
     public float wanderRadius = 5f;
     public float wanderAlertRadius = 5f;
     public float wanderFleeRadius = 2f;
-    public float grazeChangeTarget = .2f;       // graze
+    public float grazeChangeTarget = .2f; // graze
     public float grazeRadius = 2f;
-    public float greetResetTime = 10f;          // greet
+    public float greetResetTime = 10f; // greet
     public float greetResetRadius = 10f;
     public float greetRadius = 5f;
-    public float fleeRadius = 5f;               // flee
+    public float fleeRadius = 5f; // flee
     public float fleeCohesionWeight = 1f;
     public float fleeSeparationWeight = 1f;
     public float fleeSeparationRadius = 1f;
@@ -42,7 +44,7 @@ public class Sheep : MonoBehaviour
     public HeartSpawner heartSpawner;
 
     // helpers
-    public Vector2 Position => (Vector2)transform.position;
+    public Vector2 Position => (Vector2) transform.position;
 
     // private status
     private Vector2 wanderTarget;
@@ -57,6 +59,7 @@ public class Sheep : MonoBehaviour
     private Vector2 toPlayer;
     private bool isPlayerNoisy;
     private List<Sheep> neighbors;
+    private Bleater bleater;
 
     #region Lifecycle methods
 
@@ -72,7 +75,10 @@ public class Sheep : MonoBehaviour
             }
         }
 
+        bleater = GetComponent<Bleater>();
         steering = GetComponent<SteeredObject>();
+        GetComponent<Interactible>().OnInteract += OnInteract;
+
         UpdateState(SheepState.Graze);
     }
 
@@ -110,6 +116,11 @@ public class Sheep : MonoBehaviour
         }
     }
 
+    void OnInteract(GameObject player)
+    {
+        heartSpawner.ShowHearts(1);
+    }
+
     void OnTriggerEnter2D(Collider2D collider)
     {
         var pasture = collider.GetComponent<Pasture>();
@@ -128,7 +139,6 @@ public class Sheep : MonoBehaviour
             pasture = null;
         }
     }
-
 
     void UpdateState(SheepState state)
     {
@@ -319,8 +329,8 @@ public class Sheep : MonoBehaviour
     {
         return GameObject.FindObjectsOfType<Sheep>()
             .Where(other =>
-                (other.Position - Position).sqrMagnitude < neighborRadius * neighborRadius
-                && other != this)
+                (other.Position - Position).sqrMagnitude < neighborRadius * neighborRadius &&
+                other != this)
             .ToList();
     }
 

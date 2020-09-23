@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 
 public class InteractionController : MonoBehaviour
@@ -35,6 +33,11 @@ public class InteractionController : MonoBehaviour
         }
 
         SetHighlighted(closest);
+
+        if (Input.GetKeyDown(KeyCode.Space) && highighted != null)
+        {
+            highighted.Interact(player.gameObject);
+        }
     }
 
     void SetHighlighted(Interactible value)

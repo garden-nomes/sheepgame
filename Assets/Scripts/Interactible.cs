@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ public class Interactible : MonoBehaviour
     public string Action;
     private bool isHighlighted;
     public Material highlightMaterial;
+
+    public Action<GameObject> OnInteract;
 
     private SpriteRenderer spriteRenderer;
     private Material originalMaterial;
@@ -24,6 +27,14 @@ public class Interactible : MonoBehaviour
         if (spriteRenderer != null)
         {
             originalMaterial = spriteRenderer.material;
+        }
+    }
+
+    public void Interact(GameObject player)
+    {
+        if (OnInteract != null)
+        {
+            OnInteract.Invoke(player);
         }
     }
 
