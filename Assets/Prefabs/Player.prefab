@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 8252679853051425837}
   - component: {fileID: 8252679853051425838}
   - component: {fileID: 8252679853051426001}
-  - component: {fileID: 8252679853051425834}
   - component: {fileID: 1332890756}
   - component: {fileID: 1332890755}
   m_Layer: 9
@@ -185,36 +184,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.0590019, y: 0.26432705}
   m_EdgeRadius: 0
---- !u!114 &8252679853051425834
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8252679853051426004}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25e3a4baf75f649acb65c1e4a1261a01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactions:
-  - event_: 0
-    interrupt: 1
-    lines:
-    - text: 
-      duration: 3
-    - text: what a nice day
-      duration: 2
-    - text: 
-      duration: 1
-    - text: should probably check on the flock
-      duration: 2
-  - event_: 1
-    interrupt: 1
-    lines:
-    - text: oh hey {name}
-      duration: 1
-  talkbox: {fileID: 8252679853318812779}
 --- !u!82 &1332890756
 AudioSource:
   m_ObjectHideFlags: 0
@@ -728,14 +697,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6078651792212856972, guid: 9207aaa8cccaa44bda80c8e5c99dd16c, type: 3}
   m_PrefabInstance: {fileID: 2800356074517210336}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8252679853318812779 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6078651792212856971, guid: 9207aaa8cccaa44bda80c8e5c99dd16c, type: 3}
-  m_PrefabInstance: {fileID: 2800356074517210336}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b7654abb695d461582c6719edc22322, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

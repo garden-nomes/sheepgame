@@ -3,19 +3,33 @@ using UnityEngine;
 
 public class InteractionController : MonoBehaviour
 {
+    public static InteractionController instance;
+
     public Transform player;
     public float interactionRadius = 3f;
+    public bool HasTarget => target != null;
 
-    private Interactible highighted;
+    private Interactible target;
+
+    void Awake()
+    {
+        if (instance != null)
+        {
+            Debug.LogError("Multiple instances of InteractionControllers found");
+        }
+
+        instance = this;
+    }
 
     void Update()
     {
         var items = GameObject.FindObjectsOfType<Interactible>().Where(item =>
+            item.isActiveAndEnabled &&
             (player.transform.position - item.transform.position).LessThan(interactionRadius));
 
         if (!items.Any())
         {
-            SetHighlighted(null);
+            SetTarget(null);
             return;
         }
 
@@ -32,21 +46,21 @@ public class InteractionController : MonoBehaviour
             }
         }
 
-        SetHighlighted(closest);
+        SetTarget(closest);
 
-        if (Input.GetKeyDown(KeyCode.Space) && highighted != null)
+        if (Input.GetKeyDown(KeyCode.Space) && target != null)
         {
-            highighted.Interact(player.gameObject);
+            target.Interact(player.gameObject);
         }
     }
 
-    void SetHighlighted(Interactible value)
+    void SetTarget(Interactible value)
     {
-        if (value != highighted)
+        if (value != target)
         {
-            if (highighted != null)
+            if (target != null)
             {
-                highighted.IsHighlighted = false;
+                target.IsHighlighted = false;
             }
 
             if (value != null)
@@ -54,7 +68,7 @@ public class InteractionController : MonoBehaviour
                 value.IsHighlighted = true;
             }
 
-            highighted = value;
+            target = value;
         }
     }
 }

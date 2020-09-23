@@ -12,8 +12,8 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isNoisy = false;
     public bool IsNoisy => isNoisy;
-    private GameObject apple;
-    public bool HasApple => apple != null;
+    private GameObject held;
+    public bool IsHolding => held != null;
 
     private Rigidbody2D rb;
 
@@ -37,45 +37,14 @@ public class PlayerMovement : MonoBehaviour
         {
             GetComponent<SpriteRenderer>().flipX = false;
         }
+    }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+    void LateUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && !InteractionController.instance.HasTarget)
         {
-            if (apple != null)
-            {
-                var sheep = GameObject
-                    .FindObjectsOfType<Sheep>()
-                    .FirstOrDefault(s =>
-                        (s.transform.position - transform.position).sqrMagnitude < pickupRadiusSq);
-
-                if (sheep != null)
-                {
-                    GameObject.Destroy(apple);
-                    apple = null;
-                    sheep.ReceiveApple();
-                }
-                else
-                {
-                    apple.transform.position = transform.position;
-                    apple.SetActive(true);
-                    apple = null;
-                }
-            }
-            else
-            {
-                var apples = GameObject.FindGameObjectsWithTag(Tags.TREAT);
-                var pickup = apples.FirstOrDefault(apple =>
-                    (apple.transform.position - transform.position).sqrMagnitude < pickupRadiusSq);
-
-                if (pickup != null)
-                {
-                    apple = pickup;
-                    apple.SetActive(false);
-                }
-                else
-                {
-                    isNoisy = true;
-                }
-            }
+            if (held != null) { DropItem(); }
+            else { isNoisy = true; }
         }
 
         if (Input.GetKeyUp(KeyCode.Space))
@@ -84,5 +53,18 @@ public class PlayerMovement : MonoBehaviour
         }
 
         if (noiseIndicator != null) noiseIndicator.SetActive(isNoisy);
+    }
+
+    public void Pickup(GameObject item)
+    {
+        held = item;
+        held.SetActive(false);
+    }
+
+    public void DropItem()
+    {
+        held.transform.position = transform.position;
+        held.SetActive(true);
+        held = null;
     }
 }

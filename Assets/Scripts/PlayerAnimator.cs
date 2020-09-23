@@ -24,7 +24,7 @@ public class PlayerAnimator : MonoBehaviour
     void Update()
     {
         var dx = rigidbody.velocity.x;
-        var hasApple = GetComponent<PlayerMovement>().HasApple;
+        var hasApple = GetComponent<PlayerMovement>().IsHolding;
 
         if (dx < 0) renderer.flipX = true;
         if (dx > 0) renderer.flipX = false;
