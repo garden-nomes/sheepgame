@@ -6,6 +6,9 @@ Shader "Sprites/AddSmooth"
 	{
 		[PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
 		_Color ("Tint", Color) = (1,1,1,1)
+		[MaterialToggle] _OutlineToggle ("Outline", Float) = 0
+		_OutlineColor ("Outline", Color) = (1,1,1,1)
+		_Multiplier ("Multiplier", Float) = 1
 		[MaterialToggle] PixelSnap ("Pixel snap", Float) = 0
 	}
 
@@ -24,7 +27,7 @@ Shader "Sprites/AddSmooth"
 		Lighting Off
 		ZWrite Off
 		Fog { Mode Off }
-		Blend One OneMinusSrcColor
+		Blend SrcAlpha OneMinusSrcAlpha
 		ColorMask RGB
 
 		Pass
@@ -58,19 +61,33 @@ Shader "Sprites/AddSmooth"
 				OUT.texcoord = IN.texcoord;
 				OUT.color = IN.color * _Color;
 				#ifdef PIXELSNAP_ON
-				OUT.vertex = UnityPixelSnap (OUT.vertex);
+				OUT.vertex = UnityPixelSnap(OUT.vertex);
 				#endif
 
 				return OUT;
 			}
 
 			sampler2D _MainTex;
+			float4 _MainTex_ST;
+			float4 _MainTex_TexelSize;
+			fixed4 _OutlineColor;
+			fixed _Multiplier;
+			fixed _OutlineToggle;
 
 			fixed4 frag(v2f IN) : COLOR
 			{
-				fixed4 prev = IN.color * tex2D(_MainTex, IN.texcoord);
-				prev.rgb *= prev.a;
-				return prev;
+				fixed4 col = IN.color * tex2D(_MainTex, IN.texcoord);
+				col.rgb *= _Multiplier;
+
+				float2 up = float2(0, _MainTex_TexelSize.y);
+				float2 right = float2(_MainTex_TexelSize.x, 0);
+				fixed pixelLeft = tex2D(_MainTex, IN.texcoord - right).a;
+				fixed pixelRight = tex2D(_MainTex, IN.texcoord + right).a;
+				fixed pixelUp = tex2D(_MainTex, IN.texcoord + up).a;
+				fixed pixelDown = tex2D(_MainTex, IN.texcoord - up).a;
+				fixed outline = max(max(pixelLeft, pixelRight), max(pixelUp, pixelDown)) - col.a;
+
+				return lerp(col, _OutlineColor, outline * _OutlineToggle);
 			}
 		ENDCG
 		}
