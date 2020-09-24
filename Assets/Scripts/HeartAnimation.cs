@@ -25,7 +25,7 @@ public class HeartAnimation : MonoBehaviour
         var t = timer / lifeSpan;
 
         spriteRenderer.color = Color.Lerp(startColor, endColor, t);
-        transform.position = startPos + Vector3.up * lift * t;
+        transform.position = startPos + Vector3.up * lift * (t * t * t);
 
         if (t > 1f)
         {
