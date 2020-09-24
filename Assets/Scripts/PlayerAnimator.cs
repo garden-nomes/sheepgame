@@ -23,6 +23,8 @@ public class PlayerAnimator : MonoBehaviour
     public LeftRightAnimation walk;
     public LeftRightAnimation pet;
     public bool IsFacingRight => isFacingRight;
+    public SpriteRenderer heldItemVisual;
+    public int sortingOrder;
 
     private new Rigidbody2D rigidbody;
     private SpriteAnimator animator;
@@ -34,6 +36,7 @@ public class PlayerAnimator : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<SpriteAnimator>();
         movement = GetComponent<PlayerMovement>();
+        sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
 
         InteractionController.instance.OnInteract += OnInteract;
     }
@@ -43,6 +46,12 @@ public class PlayerAnimator : MonoBehaviour
         var dx = rigidbody.velocity.x;
         if (dx > 0) isFacingRight = true;
         if (dx < 0) isFacingRight = false;
+
+        if (heldItemVisual != null)
+        {
+            heldItemVisual.enabled = movement.IsHolding;
+            heldItemVisual.sortingOrder = isFacingRight ? sortingOrder + 1 : sortingOrder;
+        }
 
         if (movement.IsPetting)
         {
