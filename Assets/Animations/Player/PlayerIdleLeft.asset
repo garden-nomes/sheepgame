@@ -10,10 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7bab6d38b38b846518d62ab7018d7b7f, type: 3}
-  m_Name: PlayerWithAppleWalkRight
+  m_Name: PlayerIdleLeft
   m_EditorClassIdentifier: 
   sprites:
-  - {fileID: -4529042392078601758, guid: 9ddf8e58f7e4a4acd97f934de0b3b695, type: 3}
-  - {fileID: -7446026091647042388, guid: 9ddf8e58f7e4a4acd97f934de0b3b695, type: 3}
-  - {fileID: 5938012242645255967, guid: 9ddf8e58f7e4a4acd97f934de0b3b695, type: 3}
-  fps: 4
+  - {fileID: -1182821291677670348, guid: 9ddf8e58f7e4a4acd97f934de0b3b695, type: 3}
+  fps: 12

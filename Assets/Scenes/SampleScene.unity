@@ -1991,7 +1991,7 @@ GameObject:
   - component: {fileID: 938779483}
   - component: {fileID: 938779482}
   m_Layer: 0
-  m_Name: InteractionController
+  m_Name: Interaction Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2010,7 +2010,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1332890749}
-  interactionRadius: 3
+  interactionRadius: 2
 --- !u!4 &938779483
 Transform:
   m_ObjectHideFlags: 0
@@ -21017,6 +21017,22 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 519420031}
+    - target: {fileID: 8252679853051425838, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
+      propertyPath: idle.left
+      value: 
+      objectReference: {fileID: 11400000, guid: 37351e73f4c294844ba8ae459bd1c130, type: 2}
+    - target: {fileID: 8252679853051425838, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
+      propertyPath: idle.right
+      value: 
+      objectReference: {fileID: 11400000, guid: 0cf9f5e54efed4848944611501684dcc, type: 2}
+    - target: {fileID: 8252679853051425838, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
+      propertyPath: walk.left
+      value: 
+      objectReference: {fileID: 11400000, guid: 5d199b8e5609a4bcbbf8dedd5faeb5e3, type: 2}
+    - target: {fileID: 8252679853051425838, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
+      propertyPath: walk.right
+      value: 
+      objectReference: {fileID: 11400000, guid: 952bc742cd5964c8dbb18d1b624fda98, type: 2}
     - target: {fileID: 8252679853051426002, guid: f1d1a23366abf4cef91a6a8370aa514b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8

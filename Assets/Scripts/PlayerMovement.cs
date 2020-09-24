@@ -28,15 +28,6 @@ public class PlayerMovement : MonoBehaviour
 
         var input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         rb.velocity = input * (isNoisy ? moveSpeedSlow : moveSpeedFast);
-
-        if (rb.velocity.x < 0)
-        {
-            GetComponent<SpriteRenderer>().flipX = true;
-        }
-        else if (rb.velocity.x > 0)
-        {
-            GetComponent<SpriteRenderer>().flipX = false;
-        }
     }
 
     void LateUpdate()

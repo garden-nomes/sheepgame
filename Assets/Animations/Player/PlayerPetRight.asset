@@ -10,10 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7bab6d38b38b846518d62ab7018d7b7f, type: 3}
-  m_Name: PlayerWalkRight
+  m_Name: PlayerPetRight
   m_EditorClassIdentifier: 
   sprites:
-  - {fileID: -2311659948842064771, guid: 9ddf8e58f7e4a4acd97f934de0b3b695, type: 3}
-  - {fileID: 7364682651488144517, guid: 9ddf8e58f7e4a4acd97f934de0b3b695, type: 3}
-  - {fileID: -6287787046888575383, guid: 9ddf8e58f7e4a4acd97f934de0b3b695, type: 3}
-  fps: 8
+  - {fileID: -7446026091647042388, guid: 9ddf8e58f7e4a4acd97f934de0b3b695, type: 3}
+  - {fileID: 5938012242645255967, guid: 9ddf8e58f7e4a4acd97f934de0b3b695, type: 3}
+  fps: 4
