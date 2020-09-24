@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 
 public class InteractionController : MonoBehaviour
@@ -8,6 +9,7 @@ public class InteractionController : MonoBehaviour
     public Transform player;
     public float interactionRadius = 3f;
     public bool HasTarget => target != null;
+    public Action<GameObject> OnInteract;
 
     private Interactible target;
 
@@ -51,6 +53,11 @@ public class InteractionController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && target != null)
         {
             target.Interact(player.gameObject);
+
+            if (OnInteract != null)
+            {
+                OnInteract.Invoke(target.gameObject);
+            }
         }
     }
 

@@ -8,6 +8,7 @@ public class SheepAnimator : MonoBehaviour
     public SpriteAnimation idleRight;
     public SpriteAnimation walkRight;
     public SpriteAnimation grazeRight;
+    public bool flipX;
 
     private new Rigidbody2D rigidbody;
     private SpriteAnimator animator;
@@ -23,9 +24,9 @@ public class SheepAnimator : MonoBehaviour
     void Update()
     {
         var dx = rigidbody.velocity.x;
-
-        if (dx < 0) transform.localScale = new Vector3(1f, 1f, 1f);
-        if (dx > 0) transform.localScale = new Vector3(-1f, 1f, 1f);
+        if (dx < 0) flipX = false;
+        if (dx > 0) flipX = true;
+        transform.localScale = new Vector3(flipX ? -1f : 1f, 1f, 1f);
 
         if (rigidbody.velocity.sqrMagnitude == 0)
         {

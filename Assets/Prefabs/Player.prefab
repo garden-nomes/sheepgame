@@ -55,8 +55,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeedFast: 10
   moveSpeedSlow: 5
+  minPetTime: 0.5
   noiseIndicator: {fileID: 8252679853470221378}
-  pickupRadius: 2
+  petOffset: {x: 1.125, y: 0.015625}
 --- !u!114 &8252679853051425838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,11 +71,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   idle:
-    left: {fileID: 0}
-    right: {fileID: 0}
+    left: {fileID: 11400000, guid: 37351e73f4c294844ba8ae459bd1c130, type: 2}
+    right: {fileID: 11400000, guid: 0cf9f5e54efed4848944611501684dcc, type: 2}
   walk:
-    left: {fileID: 0}
-    right: {fileID: 0}
+    left: {fileID: 11400000, guid: 5d199b8e5609a4bcbbf8dedd5faeb5e3, type: 2}
+    right: {fileID: 11400000, guid: 952bc742cd5964c8dbb18d1b624fda98, type: 2}
+  pet:
+    left: {fileID: 11400000, guid: 266ac1a37d3474ba9ab3b46774ff8cce, type: 2}
+    right: {fileID: 11400000, guid: c14f15d1aa7ec4a088ac706f88208156, type: 2}
 --- !u!114 &8252679853051425837
 MonoBehaviour:
   m_ObjectHideFlags: 0

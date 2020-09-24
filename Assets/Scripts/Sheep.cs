@@ -7,7 +7,8 @@ public enum SheepState
     Graze,
     GreetPlayer,
     FleePlayer,
-    Alert
+    Alert,
+    Pet
 }
 
 [RequireComponent(typeof(SteeredObject))]
@@ -34,6 +35,7 @@ public class Sheep : MonoBehaviour
     public float fleeCohesionWeight = 1f;
     public float fleeSeparationWeight = 1f;
     public float fleeSeparationRadius = 1f;
+    public float petSpawnHeartRate = 1f;
 
     // status
     public bool isHeadDown = false;
@@ -55,11 +57,14 @@ public class Sheep : MonoBehaviour
     private float greetPlayerResetTimer = 0f;
     private Pasture pasture;
     public bool IsOnPasture => pasture != null && !pasture.isExhausted;
+    private float petSpawnHeartTimer = 0f;
 
     private Vector2 toPlayer;
     private bool isPlayerNoisy;
     private List<Sheep> neighbors;
     private Bleater bleater;
+    private SheepAnimator animator;
+    private Interactible interactible;
 
     #region Lifecycle methods
 
@@ -76,7 +81,9 @@ public class Sheep : MonoBehaviour
         }
 
         bleater = GetComponent<Bleater>();
+        animator = GetComponent<SheepAnimator>();
         steering = GetComponent<SteeredObject>();
+        interactible = GetComponent<Interactible>();
         GetComponent<Interactible>().OnInteract += OnInteract;
 
         UpdateState(SheepState.Graze);
@@ -113,12 +120,24 @@ public class Sheep : MonoBehaviour
             case SheepState.Alert:
                 Alert();
                 break;
+            case SheepState.Pet:
+                Pet();
+                break;
         }
     }
 
     void OnInteract(GameObject player)
     {
-        heartSpawner.ShowHearts(1);
+        if (attitude >= 1f)
+        {
+            heartSpawner.ShowHearts(1);
+            player.GetComponent<PlayerMovement>().Pet(this);
+            UpdateState(SheepState.Pet);
+        }
+        else
+        {
+            UpdateState(SheepState.FleePlayer);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D collider)
@@ -151,7 +170,12 @@ public class Sheep : MonoBehaviour
             case SheepState.FleePlayer:
                 fleeTarget = player.transform.position;
                 break;
+            case SheepState.Pet:
+                petSpawnHeartTimer = 0f;
+                break;
         }
+
+        interactible.enabled = state != SheepState.Pet;
 
         this.state = state;
     }
@@ -275,6 +299,39 @@ public class Sheep : MonoBehaviour
             UpdateState(SheepState.FleePlayer);
         }
         else if (!toPlayer.LessThan(wanderAlertRadius))
+        {
+            UpdateState(SheepState.Graze);
+        }
+    }
+
+    void Pet()
+    {
+        isHeadDown = false;
+
+        var offset = player.petOffset;
+        offset.x *= player.GetComponent<PlayerAnimator>().IsFacingRight ? 1 : -1;
+        var target = (Vector2) player.transform.position + offset;
+
+        MoveTowards(target, .1f);
+
+        if ((target - Position).LessThan(.2f))
+        {
+            transform.position = target;
+        }
+
+        if (steering.Velocity.sqrMagnitude == 0)
+        {
+            animator.flipX = transform.position.x < player.transform.position.x;
+        }
+
+        petSpawnHeartTimer += Time.deltaTime;
+        if (petSpawnHeartTimer >= petSpawnHeartRate)
+        {
+            petSpawnHeartTimer = 0f;
+            heartSpawner.ShowHearts(1);
+        }
+
+        if (!player.IsPetting)
         {
             UpdateState(SheepState.Graze);
         }

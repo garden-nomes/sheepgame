@@ -7,13 +7,19 @@ public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeedFast = 10f;
     public float moveSpeedSlow = 5f;
+    public float minPetTime = 0.5f;
     public GameObject noiseIndicator;
-    public float pickupRadius = 2f;
+    public Vector2 petOffset = new Vector2(1f, .1f);
 
     private bool isNoisy = false;
     public bool IsNoisy => isNoisy;
+
     private GameObject held;
     public bool IsHolding => held != null;
+
+    private Sheep petting = null;
+    public bool IsPetting => petting != null;
+    private float petTime = 0f;
 
     private Rigidbody2D rb;
 
@@ -24,10 +30,23 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        var pickupRadiusSq = pickupRadius * pickupRadius;
+        if (IsPetting)
+        {
+            petTime += Time.deltaTime;
 
-        var input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        rb.velocity = input * (isNoisy ? moveSpeedSlow : moveSpeedFast);
+            var radius = InteractionController.instance.interactionRadius;
+
+            if (!(transform.position - petting.transform.position).LessThan(radius) ||
+                (petTime > minPetTime && !Input.GetKey(KeyCode.Space)))
+            {
+                petting = null;
+            }
+        }
+        else
+        {
+            var input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            rb.velocity = input * (isNoisy || IsPetting ? moveSpeedSlow : moveSpeedFast);
+        }
     }
 
     void LateUpdate()
@@ -57,5 +76,11 @@ public class PlayerMovement : MonoBehaviour
         held.transform.position = transform.position;
         held.SetActive(true);
         held = null;
+    }
+
+    public void Pet(Sheep sheep)
+    {
+        petting = sheep;
+        petTime = 0f;
     }
 }
