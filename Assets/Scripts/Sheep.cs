@@ -1,19 +1,20 @@
 using System.Collections.Generic;
 using System.Linq;
+using SheepAI;
+using SheepAI.States;
 using UnityEngine;
 
-public enum SheepState
+public class SheepAwareness
 {
-    Graze,
-    GreetPlayer,
-    FleePlayer,
-    Alert,
-    Pet
+    public PlayerMovement player;
+    public IEnumerable<Apple> apples;
+    public IEnumerable<SteeredObject> neighbors;
 }
 
 [RequireComponent(typeof(SteeredObject))]
 [RequireComponent(typeof(Bleater))]
 [RequireComponent(typeof(Interactible))]
+[RequireComponent(typeof(SheepAnimator))]
 public class Sheep : MonoBehaviour
 {
     // individual traits
@@ -49,23 +50,11 @@ public class Sheep : MonoBehaviour
     public Vector2 Position => (Vector2) transform.position;
 
     // private status
-    private Vector2 wanderTarget;
-    private Vector2 fleeTarget;
-    private SteeredObject steering;
-    private SheepState state;
-    public SheepState State => state;
-    private float greetPlayerResetTimer = 0f;
-    private Pasture pasture;
+    private SheepStateMachine stateMachine;
+    public Pasture pasture;
     public bool IsOnPasture => pasture != null && !pasture.isExhausted;
-    private float petSpawnHeartTimer = 0f;
 
-    private Vector2 toPlayer;
-    private bool isPlayerNoisy;
-    private Bleater bleater;
-    private SheepAnimator animator;
     private Interactible interactible;
-
-    #region Lifecycle methods
 
     void Start()
     {
@@ -79,49 +68,24 @@ public class Sheep : MonoBehaviour
             }
         }
 
-        bleater = GetComponent<Bleater>();
-        animator = GetComponent<SheepAnimator>();
-        steering = GetComponent<SteeredObject>();
         interactible = GetComponent<Interactible>();
         GetComponent<Interactible>().OnInteract += OnInteract;
 
-        UpdateState(SheepState.Graze);
+        stateMachine = new SheepStateMachine(this);
+        stateMachine.Push<WanderState>();
     }
 
     void Update()
     {
-        // timers
-        if (greetPlayerResetTimer > 0f) greetPlayerResetTimer -= Time.deltaTime;
-
-        // update cached data
-        toPlayer = player.transform.position - transform.position;
-        isPlayerNoisy = player.IsNoisy;
+        var toPlayer = transform.position - player.transform.position;
 
         // universal state transitions
-        if (state != SheepState.FleePlayer && isPlayerNoisy && toPlayer.LessThan(fleeRadius))
+        if (!(stateMachine.CurrentState is FleePlayerState) && player.IsNoisy && toPlayer.LessThan(fleeRadius))
         {
-            // flee
-            UpdateState(SheepState.FleePlayer);
+            stateMachine.Push<FleePlayerState>();
         }
 
-        switch (state)
-        {
-            case SheepState.Graze:
-                Wander();
-                break;
-            case SheepState.GreetPlayer:
-                Greet();
-                break;
-            case SheepState.FleePlayer:
-                Flee();
-                break;
-            case SheepState.Alert:
-                Alert();
-                break;
-            case SheepState.Pet:
-                Pet();
-                break;
-        }
+        stateMachine.Update();
     }
 
     void OnInteract(GameObject player)
@@ -129,11 +93,11 @@ public class Sheep : MonoBehaviour
         if (attitude >= 1f)
         {
             player.GetComponent<PlayerMovement>().Pet(this);
-            UpdateState(SheepState.Pet);
+            stateMachine.Push<PlayerPetState>();
         }
         else
         {
-            UpdateState(SheepState.FleePlayer);
+            stateMachine.Push<FleePlayerState>();
         }
     }
 
@@ -156,245 +120,33 @@ public class Sheep : MonoBehaviour
         }
     }
 
-    void UpdateState(SheepState state)
-    {
-        // state entry logic
-        switch (state)
-        {
-            case SheepState.Graze:
-                wanderTarget = Position;
-                break;
-            case SheepState.FleePlayer:
-                fleeTarget = player.transform.position;
-                break;
-            case SheepState.Pet:
-                petSpawnHeartTimer = 0f;
-                break;
-        }
-
-        interactible.enabled = state != SheepState.Pet;
-
-        this.state = state;
-    }
-
     public void ReceiveApple()
     {
         heartSpawner.ShowHearts(5);
         attitude += 1f;
-        greetPlayerResetTimer = greetResetTime;
     }
 
-    #endregion
-
-    #region Behaviours
-
-    void Wander()
+    public SheepAwareness Awareness => new SheepAwareness()
     {
-        // check if apple within range
-        var apple = FindApple();
+        neighbors = FindNeighbors(),
+        apples = FindApples(),
+        player = player,
+    };
 
-        if (apple != null)
-        {
-            // seek apple
-            wanderTarget = apple.transform.position;
-
-            // pick up apple
-            if ((apple.transform.position - transform.position).LessThan(pickupRadius))
-            {
-                GameObject.Destroy(apple);
-                ReceiveApple();
-            }
-        }
-        else
-        {
-            // change target every so often
-            var changeTargetChance = IsOnPasture ? grazeChangeTarget : wanderChangeTarget;
-
-            if (Random.value < changeTargetChance * Time.deltaTime)
-            {
-                wanderTarget = PickNewWanderPoint();
-            }
-        }
-
-        steering.MoveTowards(wanderTarget);
-
-        // graze when on pasture and not moving
-        if (steering.Velocity.sqrMagnitude == 0 && IsOnPasture)
-        {
-            isHeadDown = true;
-            pasture.exhaustion -= Time.deltaTime;
-        }
-        else
-        {
-            isHeadDown = false;
-        }
-
-        if (attitude < 1f)
-        {
-            // go alert when player approaches
-            if (toPlayer.LessThan(wanderAlertRadius))
-            {
-                UpdateState(SheepState.Alert);
-            }
-        }
-        else if (attitude >= 2f)
-        {
-            // green when player approaches
-            if (greetPlayerResetTimer <= 0f && toPlayer.LessThan(greetRadius))
-            {
-                UpdateState(SheepState.GreetPlayer);
-            }
-        }
-    }
-
-    void Greet()
-    {
-        isHeadDown = false;
-
-        if (toPlayer.LessThan(2f))
-        {
-            // boop
-            heartSpawner.ShowHearts(1);
-            EventBus.Instance.Notify(Event.SHEEP_GREET, gameObject);
-            greetPlayerResetTimer = greetResetTime;
-            UpdateState(SheepState.Graze);
-        }
-        else
-        {
-            steering.MoveTowards(player.transform.position);
-        }
-    }
-
-    void Flee()
-    {
-        isHeadDown = false;
-
-        // if the sheep can hear player, update position
-        if (isPlayerNoisy)
-        {
-            fleeTarget = player.transform.position;
-        }
-
-        // flocking behaviours
-        var neighbors = FindNeighbors();
-        steering.FleeFrom(fleeTarget);
-        steering.Seperate(neighbors, fleeSeparationRadius, fleeSeparationWeight);
-        steering.Cohere(neighbors, fleeCohesionWeight);
-
-        // if out of range revert to wander
-        if (!(fleeTarget - Position).LessThan(fleeRadius + 3f))
-        {
-            UpdateState(SheepState.Graze);
-        }
-    }
-
-    void Alert()
-    {
-        isHeadDown = false;
-
-        if (toPlayer.LessThan(wanderFleeRadius))
-        {
-            UpdateState(SheepState.FleePlayer);
-        }
-        else if (!toPlayer.LessThan(wanderAlertRadius))
-        {
-            UpdateState(SheepState.Graze);
-        }
-    }
-
-    void Pet()
-    {
-        isHeadDown = false;
-
-        var offset = player.petOffset;
-        offset.x *= player.GetComponent<PlayerAnimator>().IsFacingRight ? 1 : -1;
-        var target = (Vector2) player.transform.position + offset;
-
-        steering.MoveTowards(target, .1f);
-
-        if ((target - Position).LessThan(.2f))
-        {
-            transform.position = target;
-        }
-
-        if (steering.Velocity.sqrMagnitude == 0)
-        {
-            animator.flipX = transform.position.x < player.transform.position.x;
-        }
-
-        petSpawnHeartTimer += Time.deltaTime;
-        if (petSpawnHeartTimer >= petSpawnHeartRate)
-        {
-            petSpawnHeartTimer = 0f;
-            heartSpawner.ShowHearts(1);
-        }
-
-        if (!player.IsPetting)
-        {
-            UpdateState(SheepState.Graze);
-        }
-    }
-
-    #endregion
-
-    #region Helpers
-
-    List<SteeredObject> FindNeighbors()
+    IEnumerable<SteeredObject> FindNeighbors()
     {
         return GameObject.FindObjectsOfType<Sheep>()
             .Where(other =>
                 (other.Position - Position).sqrMagnitude < neighborRadius * neighborRadius &&
                 other != this)
-            .Select(other => other.GetComponent<SteeredObject>())
-            .ToList();
+            .Select(other => other.GetComponent<SteeredObject>());
     }
 
-    GameObject FindApple()
+    IEnumerable<Apple> FindApples()
     {
-        var treats = GameObject.FindGameObjectsWithTag(Tags.TREAT);
+        var apples = GameObject.FindObjectsOfType<Apple>();
 
-        return treats.FirstOrDefault(treat =>
-        {
-            return (treat.transform.position - transform.position).LessThan(wanderAlertRadius);
-        });
+        return apples.Where(apple =>
+            (apple.transform.position - transform.position).LessThan(wanderAlertRadius));
     }
-
-    Vector2 PickNewWanderPoint()
-    {
-        var radius = IsOnPasture ? grazeRadius : wanderRadius;
-
-        for (int i = 0; i < 32; i++)
-        {
-            var sample = Position + Random.insideUnitCircle * radius;
-
-            if (CanMoveTo(sample) && (i > 8 || IsPointOnPasture(sample)))
-            {
-                return sample;
-            }
-        }
-
-        return Position;
-    }
-
-    bool IsPointOnPasture(Vector2 point)
-    {
-        return Physics2D.OverlapPointAll(point)
-            .Any(collider =>
-            {
-                var pasture = collider.GetComponent<Pasture>();
-                return pasture != null && !pasture.isExhausted;
-            });
-    }
-
-    bool CanMoveTo(Vector2 point)
-    {
-        var results = new RaycastHit2D[1];
-        var filter = new ContactFilter2D();
-        filter.SetLayerMask(blockingLayer);
-        var raycast = GetComponent<Collider2D>()
-            .Cast(point - Position, filter, results, (point - Position).magnitude);
-        return raycast == 0;
-    }
-
-    #endregion
 }

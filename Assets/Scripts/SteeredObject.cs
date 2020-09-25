@@ -53,21 +53,25 @@ public class SteeredObject : MonoBehaviour
         }
     }
 
-    public void Cohere(IList<SteeredObject> neighbors, float weight = 1f)
+    public void Cohere(IEnumerable<SteeredObject> neighbors, float weight = 1f)
     {
-        var center = neighbors.Aggregate(
+        var list = neighbors.ToList();
+
+        var center = list.Aggregate(
             Vector2.zero,
-            (sum, neighbor) => sum + neighbor.Position) / neighbors.Count;
+            (sum, neighbor) => sum + neighbor.Position) / list.Count;
 
         AddForce((center - Position).normalized * weight);
     }
 
-    public void Seperate(IList<SteeredObject> neighbors, float radius = 1f, float weight = 1f)
+    public void Seperate(IEnumerable<SteeredObject> neighbors, float radius = 1f, float weight = 1f)
     {
-        foreach (var neighbor in neighbors)
+        var list = neighbors.ToList();
+
+        foreach (var neighbor in list)
         {
             var multiplier = Mathf.Pow((neighbor.Position - Position).magnitude / radius, -2f);
-            var force = (Position - neighbor.Position).normalized / neighbors.Count * multiplier;
+            var force = (Position - neighbor.Position).normalized / list.Count * multiplier;
             AddForce(force * weight);
         }
     }
