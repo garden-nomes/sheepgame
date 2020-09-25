@@ -24,9 +24,24 @@ ScriptedImporter:
     tilePadding: {x: 0, y: 0}
     tileOffset: {x: 0, y: 0}
   animationSettings:
-  - animationName: Loop
+  - animationName: Walk Right
+    loopTime: 1
+    about: "Animation Type:\tForward\nAnimation:\tFrom: 0; To: 2"
+  - animationName: Walk Left
+    loopTime: 1
+    about: "Animation Type:\tForward\nAnimation:\tFrom: 3; To: 5"
+  - animationName: Pet Right
     loopTime: 1
     about: "Animation Type:\tForward\nAnimation:\tFrom: 6; To: 7"
+  - animationName: Pet Left
+    loopTime: 1
+    about: "Animation Type:\tForward\nAnimation:\tFrom: 8; To: 9"
+  - animationName: Bell Ring Right
+    loopTime: 1
+    about: "Animation Type:\tForward\nAnimation:\tFrom: 10; To: 13"
+  - animationName: Bell Ring Left
+    loopTime: 1
+    about: "Animation Type:\tForward\nAnimation:\tFrom: 14; To: 17"
   atlas: {instanceID: 0}
   importType: 0
   bindType: 0

@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeedFast = 10f;
     public float moveSpeedSlow = 5f;
-    public float minPetTime = 0.5f;
+    public float minPetTime = 1f;
     public GameObject noiseIndicator;
     public Vector2 petOffset = new Vector2(1f, .1f);
 

@@ -130,7 +130,6 @@ public class Sheep : MonoBehaviour
     {
         if (attitude >= 1f)
         {
-            heartSpawner.ShowHearts(1);
             player.GetComponent<PlayerMovement>().Pet(this);
             UpdateState(SheepState.Pet);
         }

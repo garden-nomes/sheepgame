@@ -22,14 +22,15 @@ public class PlayerAnimator : MonoBehaviour
     public LeftRightAnimation idle;
     public LeftRightAnimation walk;
     public LeftRightAnimation pet;
+    public LeftRightAnimation bellRing;
     public bool IsFacingRight => isFacingRight;
     public SpriteRenderer heldItemVisual;
-    public int sortingOrder;
 
     private new Rigidbody2D rigidbody;
     private SpriteAnimator animator;
     private PlayerMovement movement;
     private bool isFacingRight = true;
+    private int sortingOrder;
 
     void Start()
     {
@@ -53,7 +54,11 @@ public class PlayerAnimator : MonoBehaviour
             heldItemVisual.sortingOrder = isFacingRight ? sortingOrder + 1 : sortingOrder;
         }
 
-        if (movement.IsPetting)
+        if (movement.IsNoisy)
+        {
+            Set(bellRing);
+        }
+        else if (movement.IsPetting)
         {
             Set(pet);
         }
