@@ -61,7 +61,6 @@ public class Sheep : MonoBehaviour
 
     private Vector2 toPlayer;
     private bool isPlayerNoisy;
-    private List<Sheep> neighbors;
     private Bleater bleater;
     private SheepAnimator animator;
     private Interactible interactible;
@@ -97,7 +96,6 @@ public class Sheep : MonoBehaviour
         // update cached data
         toPlayer = player.transform.position - transform.position;
         isPlayerNoisy = player.IsNoisy;
-        neighbors = FindNeighbors();
 
         // universal state transitions
         if (state != SheepState.FleePlayer && isPlayerNoisy && toPlayer.LessThan(fleeRadius))
@@ -218,7 +216,7 @@ public class Sheep : MonoBehaviour
             }
         }
 
-        MoveTowards(wanderTarget);
+        steering.MoveTowards(wanderTarget);
 
         // graze when on pasture and not moving
         if (steering.Velocity.sqrMagnitude == 0 && IsOnPasture)
@@ -263,7 +261,7 @@ public class Sheep : MonoBehaviour
         }
         else
         {
-            MoveTowards(player.transform.position);
+            steering.MoveTowards(player.transform.position);
         }
     }
 
@@ -278,9 +276,10 @@ public class Sheep : MonoBehaviour
         }
 
         // flocking behaviours
-        FleeFrom(fleeTarget);
-        Seperate(fleeSeparationWeight, fleeSeparationRadius);
-        Cohere(fleeCohesionWeight);
+        var neighbors = FindNeighbors();
+        steering.FleeFrom(fleeTarget);
+        steering.Seperate(neighbors, fleeSeparationRadius, fleeSeparationWeight);
+        steering.Cohere(neighbors, fleeCohesionWeight);
 
         // if out of range revert to wander
         if (!(fleeTarget - Position).LessThan(fleeRadius + 3f))
@@ -311,7 +310,7 @@ public class Sheep : MonoBehaviour
         offset.x *= player.GetComponent<PlayerAnimator>().IsFacingRight ? 1 : -1;
         var target = (Vector2) player.transform.position + offset;
 
-        MoveTowards(target, .1f);
+        steering.MoveTowards(target, .1f);
 
         if ((target - Position).LessThan(.2f))
         {
@@ -338,55 +337,15 @@ public class Sheep : MonoBehaviour
 
     #endregion
 
-    #region Movement
-
-    void MoveTowards(Vector2 target, float radius = 1f, float weight = 1f)
-    {
-        if (!(target - Position).LessThan(radius))
-        {
-            steering.AddForce((target - Position).normalized * weight);
-        }
-    }
-
-    void FleeFrom(Vector2 target, float weight = 1f)
-    {
-        var fromTarget = Position - target;
-        steering.AddForce(fromTarget.normalized * weight);
-    }
-
-    void Cohere(float weight = 1f)
-    {
-        var neighbors = FindNeighbors();
-
-        var center = neighbors.Aggregate(
-            Vector2.zero,
-            (sum, sheep) => sum + sheep.Position) / neighbors.Count;
-
-        steering.AddForce((center - Position).normalized * weight);
-    }
-
-    void Seperate(float weight = 1f, float radius = 1f)
-    {
-        var neighbors = FindNeighbors();
-
-        foreach (var neighbor in neighbors)
-        {
-            var multiplier = Mathf.Pow((neighbor.Position - Position).magnitude / radius, -2f);
-            var force = (Position - neighbor.Position).normalized / neighbors.Count * multiplier;
-            steering.AddForce(force * weight);
-        }
-    }
-
-    #endregion
-
     #region Helpers
 
-    List<Sheep> FindNeighbors()
+    List<SteeredObject> FindNeighbors()
     {
         return GameObject.FindObjectsOfType<Sheep>()
             .Where(other =>
                 (other.Position - Position).sqrMagnitude < neighborRadius * neighborRadius &&
                 other != this)
+            .Select(other => other.GetComponent<SteeredObject>())
             .ToList();
     }
 
