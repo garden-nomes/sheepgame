@@ -1,0 +1,4 @@
+- _Beach Ambience_: https://freesound.org/people/klankbeeld/
+- _Music_: https://freemusicarchive.org/music/Chad_Crouch/Field_Report_Vol_I_Oaks_Bottom_Instrumental
+- _Bell_: https://freesound.org/people/stomachache/sounds/231275/
+- _Sheep Bleating_: https://freesound.org/people/Yuval/sounds/210511/
